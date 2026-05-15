@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>박하얀 — UI/UX Designer Portfolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@300;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-paper: #e5e5e3; 
+      --ink: #1a1a1a;
+      --accent: #ff5f1f; 
+      --silver: #cbd5e0;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Gmarket Sans', sans-serif;
+      background-color: var(--bg-paper);
+      background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+      color: var(--ink);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* 건축 도면용 십자선 커서 */
+    #custom-cursor {
+      width: 20px; height: 20px; border: 1px solid var(--accent);
+      position: fixed; pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    #custom-cursor::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100vw; height: 1px; background: rgba(26, 35, 48, 0.05); transform: translate(-50%, -50%); }
+    #custom-cursor::before { content: ''; position: absolute; top: 50%; left: 50%; height: 100vh; width: 1px; background: rgba(26, 35, 48, 0.05); transform: translate(-50%, -50%); }
+
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 1000; padding: 2rem;
+      display: flex; justify-content: space-between; mix-blend-mode: difference; color: white;
+    }
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
+    .nav-links a { color: inherit; text-decoration: none; font-size: 0.8rem; letter-spacing: 0.1em; }
+
+    /* --- Hero Section --- */
+    .hero { height: 100vh; position: relative; padding: 0 5rem; display: flex; align-items: center; }
+    .hero-name { font-size: clamp(5rem, 18vw, 15rem); font-weight: 700; line-height: 0.8; letter-spacing: -0.05em; z-index: 10; pointer-events: none; transform: rotate(-3deg); }
+    .hero-name span { display: block; margin-left: 10vw; -webkit-text-stroke: 1px var(--ink); color: transparent; }
+    .hero-role-vertical { position: absolute; right: 3rem; top: 20%; writing-mode: vertical-rl; font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.5rem; border-left: 1px solid var(--ink); padding-left: 1rem; }
+    .hero-visual { position: absolute; width: 45vw; height: 70vh; right: 10%; top: 15%; z-index: 1; clip-path: polygon(15% 0%, 100% 10%, 85% 100%, 0% 85%); overflow: hidden; filter: grayscale(1) contrast(1.1); transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+    .hero-visual:hover { filter: grayscale(0); clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-slogan { position: absolute; bottom: 8%; left: 5rem; max-width: 400px; border-top: 1px solid var(--ink); padding-top: 2rem; }
+
+    /* --- Section Common --- */
+    section { padding: 10rem 5rem; position: relative; }
+    .section-title { font-size: 5rem; line-height: 0.9; margin-bottom: 4rem; letter-spacing: -0.04em; }
+
+    /* --- Philosophy Section --- */
+    .philosophy { background: var(--ink); color: var(--bg-paper); }
+    .phil-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 5rem; }
+    .phil-card { background: var(--bg-paper); color: var(--ink); padding: 3rem; border: 1px solid var(--ink); transition: 0.4s; }
+    .phil-card:hover { transform: translateY(-20px) rotate(2deg); z-index: 5; box-shadow: 20px 20px 0px var(--accent); }
+    .phil-num { font-family: 'DM Serif Display'; font-size: 3rem; opacity: 0.2; }
+
+    /* --- About Me Section (New) --- */
+    .about-me { background: var(--bg-paper); }
+    .about-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6rem; }
+    .about-text h3 { font-size: 2.5rem; margin-bottom: 2rem; color: var(--accent); }
+    .about-desc { font-size: 1.1rem; line-height: 1.8; word-break: keep-all; margin-bottom: 3rem; }
+    
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-box { border: 1px solid var(--ink); padding: 2rem; text-align: center; background: white; transition: 0.3s; }
+    .stat-box:hover { background: var(--ink); color: white; }
+    .stat-val { font-size: 3rem; font-weight: 700; display: block; line-height: 1; }
+    .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .skills-tag-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+    .skill-tag { border: 1px solid var(--ink); padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; }
+    .skill-tag.highlight { background: var(--ink); color: white; }
+
+    /* --- Projects & Detail Section --- */
+    .detail-page { background: var(--white); padding: 10rem 5rem; }
+    .experience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; margin-top: 6rem; }
+    .list-group { margin-bottom: 5rem; }
+    .list-group h4 { font-size: 1.8rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--ink); display: inline-block; }
+    .list-item { margin-bottom: 1.5rem; }
+    .list-item b { display: block; font-size: 1.1rem; color: var(--accent); }
+    .list-item p { font-size: 0.95rem; color: #555; }
+
+    .project-showcase { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 8rem; }
+    .pj-card { border: 1px solid #ddd; padding: 2.5rem; position: relative; overflow: hidden; background: #fafafa; }
+    .pj-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--ink); }
+    .pj-card h5 { font-size: 1.4rem; margin-bottom: 1rem; }
+    .pj-meta { font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 1.5rem; text-transform: uppercase; }
+    .pj-card p { font-size: 0.9rem; line-height: 1.6; color: #666; }
+
+    .btn-primary { display: inline-block; padding: 1.5rem 3.5rem; background: var(--ink); color: white; text-decoration: none; font-weight: 700; margin-top: 2rem; transition: 0.3s; }
+    .btn-primary:hover { transform: translate(-5px, -5px); box-shadow: 5px 5px 0 var(--accent); }
+
+    .hidden-page { display: none; }
+    .fade-up { opacity: 0; transform: translateY(40px); transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1024px) {
+      .hero-name { font-size: 8rem; }
+      .about-layout, .experience-grid, .project-showcase, .phil-grid { grid-template-columns: 1fr; }
+      section { padding: 5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="custom-cursor"></div>
+
+  <div id="main-page">
+    <nav>
+      <div class="nav-logo">PARK HAYANE</div>
+      <ul class="nav-links">
+        <li><a href="#philosophy">PHILOSOPHY</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="javascript:void(0)" onclick="showDetail()">PROJECTS</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-role-vertical">UI/UX DESIGNER & STRATEGIST</div>
+      <div class="hero-text">
+        <h1 class="hero-name">박<span>하얀</span></h1>
+        <div class="hero-slogan fade-up">
+          빛바랜 색마저 '멋'으로 승화시켜<br>
+          사용자의 일상에 투명하게 스며듭니다.<br>
+          <a href="javascript:void(0)" class="btn-primary" onclick="showDetail()">VIEW ARCHIVE →</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="/mnt/user-data/uploads/my-notion-face-transparent__1_.png" alt="Profile" 
+             onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop';">
+      </div>
+    </section>
+
+    <section class="philosophy" id="philosophy">
+      <h2 class="section-title fade-up">DE-CONSTRUCTED<br>EXPERIENCE</h2>
+      <div class="phil-grid">
+        <div class="phil-card fade-up">
+          <div class="phil-num">01</div>
+          <h3>투명한 경험</h3>
+          <p>사용자가 UI를 의식하지 않아도 자연스럽게 목표에 도달하도록, 인터페이스는 스스로를 지웁니다. 보이지 않는 디자인의 힘을 믿습니다.</p>
+        </div>
+        <div class="phil-card fade-up">
+          <div class="phil-num">02</div>
+          <h3>색의 승화</h3>
+          <p>빛바랜 색에서도 아름다움을 발견합니다. 완벽하지 않은 것들을 멋으로 전환하는 감각으로 독자적인 시각 언어를 만듭니다.</p>
+        </div>
+        <div class="phil-card fade-up">
+          <div class="phil-num">03</div>
+          <h3>일상의 리듬</h3>
+          <p>디자인은 삶의 흐름을 방해하지 않아야 합니다. 사용자의 일상에 조용히 동화되어 더 나은 리듬을 만드는 것이 목표입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-me" id="about">
+      <div class="about-layout">
+        <div class="about-text fade-up">
+          <h2 class="section-title">경계를 지우는<br>디자이너</h2>
+          <h3>나는 어떤 디자이너인가?</h3>
+          <p class="about-desc">
+            사용자가 인터페이스를 '사용한다'는 의식 없이 자연스럽게 목표에 도달하도록 돕는 경험을 설계합니다. 
+            화면의 아름다움뿐만 아니라 사용자의 흐름, 감정, 리듬까지 함께 고민하는 디자이너입니다.
+            <br><br>
+            저는 완벽하게 정리된 것만이 아니라, 조금 바랜 색이나 여백 속에서도 감각을 발견합니다. 
+            이런 요소들을 조화롭게 연결하여 하나의 완성된 경험으로 만드는 것에 매력을 느낍니다.
+          </p>
+          <div class="skills-tag-wrap">
+            <span class="skill-tag highlight">UI Design</span>
+            <span class="skill-tag">UX Research</span>
+            <span class="skill-tag highlight">Figma</span>
+            <span class="skill-tag">Prototyping</span>
+            <span class="skill-tag highlight">Design System</span>
+            <span class="skill-tag">User Testing</span>
+            <span class="skill-tag">Information Architecture</span>
+          </div>
+        </div>
+
+        <div class="about-stats fade-up">
+          <div class="stats-grid">
+            <div class="stat-box"><span class="stat-val">3+</span><span class="stat-label">Years Exp</span></div>
+            <div class="stat-box"><span class="stat-val">20+</span><span class="stat-label">Projects</span></div>
+            <div class="stat-box"><span class="stat-val">0px</span><span class="stat-label">Invisible Design</span></div>
+            <div class="stat-box"><span class="stat-val">∞</span><span class="stat-label">Curiosity</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="detail-page" class="page hidden-page">
+    <nav style="mix-blend-mode: normal; color: var(--ink);">
+      <div class="nav-logo">PH — ARCHIVE</div>
+      <ul class="nav-links">
+        <li><a href="javascript:void(0)" onclick="showMain()">BACK TO HOME</a></li>
+      </ul>
+    </nav>
+
+    <section class="detail-page">
+      <div class="fade-up">
+        <h2 class="section-title">AWARDS &<br>PROJECTS</h2>
+        <p style="font-size: 1.5rem; color: var(--accent);">"빛바랜 색마저 멋으로 승화시켜 사용자의 일상에 투명하게 스며드는 사람"</p>
+      </div>
+
+      <div class="experience-grid">
+        <div class="fade-up">
+          <div class="list-group">
+            <h4>🏆 Awards & Experience</h4>
+            <div class="list-item">
+              <b>주요 수상 및 자격</b>
+              <p>• 디자인 위크 상 수상 / 교과우수상 (영어, 체육)</p>
+            </div>
+            <div class="list-item">
+              <b>활동 사항</b>
+              <p>• 코더스(동아리): 포스터 및 부원 소개 디자인 총괄</p>
+              <p>• 오디(동아리): 체육대회 영상 촬영 및 메인 편집 제작</p>
+              <p>• 4D(동아리): 브랜드 스티커 제작 및 UI/UX 리디자인 프로젝트</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up">
+          <div class="list-group">
+            <h4>✉️ Contact</h4>
+            <p>Instagram: <b>@hayan4882</b></p>
+            <p>Email: <b>d2509@e-mirim.hs.kr</b></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-showcase">
+        <div class="pj-card fade-up">
+          <div class="pj-meta">PROJECT 01</div>
+          <h5>우리 선 그어볼까?</h5>
+          <p><b>Role:</b> 기획 및 UI/UX 디자인<br><b>Period:</b> 미림 해커톤<br><br>사용자의 흐름을 단순하고 직관적으로 정리한 앱 프로젝트.</p>
+        </div>
+        <div class="pj-card fade-up">
+          <div class="pj-meta">PROJECT 02</div>
+          <h5>술이 들어간다 쭉쭉</h5>
+          <p><b>Role:</b> 서비스 기획 및 UI 설계<br><b>Period:</b> 앱 제작 프로젝트<br><br>콘텐츠의 시각 경험을 함께 설계한 모바일 앱/웹 디자인.</p>
+        </div>
+        <div class="pj-card fade-up">
+          <div class="pj-meta">PROJECT 03</div>
+          <h5>SAM 아이콘 디자인</h5>
+          <p><b>Role:</b> 그래픽 작업<br><b>Period:</b> 디자인 시스템 구축<br><br>6가지 스타일의 체크박스 아이콘을 포함한 비주얼 시스템 작업.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 커서 로직
+    const cursor = document.getElementById('custom-cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    // 스크롤 애니메이션
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // 페이지 전환
+    function showDetail() {
+      document.getElementById('main-page').classList.add('hidden-page');
+      document.getElementById('detail-page').classList.remove('hidden-page');
+      window.scrollTo(0,0);
+    }
+    function showMain() {
+      document.getElementById('detail-page').classList.add('hidden-page');
+      document.getElementById('main-page').classList.remove('hidden-page');
+      window.scrollTo(0,0);
+    }
+  </script>
+</body>
+</html>

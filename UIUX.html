@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>박하얀 포트폴리오 | UI/UX Designer</title>
+    <style>
+        :root {
+            --bg-white: #ffffff;
+            --faded-green: #e8f5e9; 
+            --faded-blue: #e3f2fd;  
+            --accent-green: #a5d6a7;
+            --accent-blue: #90caf9;
+            --accent-orange: #ffab91; /* 주황색 포인트 */
+            --text-main: #333333;
+            --text-sub: #666666;
+        }
+
+        /* 커스텀 커서 스타일 */
+        body {
+            cursor: none; /* 기본 커서 숨김 */
+            background: linear-gradient(135deg, var(--faded-green) 0%, var(--faded-blue) 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            font-family: 'Pretendard', sans-serif;
+            padding: 40px 20px;
+            scroll-behavior: smooth;
+        }
+
+        #custom-cursor {
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-orange);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+
+        /* 레이아웃 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        header { text-align: center; margin-bottom: 50px; }
+
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: white;
+            margin-bottom: 20px;
+            border: 5px solid white;
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 20px 0;
+            word-break: keep-all;
+        }
+
+        .slogan b { color: #2e7d32; }
+
+        /* 버튼 그룹 */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            cursor: none;
+        }
+
+        .btn-primary { background: var(--text-main); color: white; }
+        .btn-outline { border: 1px solid #ccc; color: var(--text-main); }
+        .btn:hover { transform: scale(1.05); }
+
+        /* 경력 및 수상 섹션 */
+        section {
+            margin-top: 40px;
+            text-align: left;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 40px;
+        }
+
+        h2 { font-size: 1.4rem; margin-bottom: 20px; color: #444; }
+
+        .list-item {
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .list-item h3 { font-size: 1rem; margin-bottom: 5px; }
+        .list-item p { font-size: 0.9rem; color: var(--text-sub); }
+
+        /* 연락처 정보 섹션 */
+        #contact-info {
+            display: none; /* 기본 숨김 */
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div class="container">
+        <header>
+            <img src="my-notion-face-transparent (1).jpg" alt="박하얀" class="profile-img">
+            <p style="letter-spacing: 3px; font-weight: 700;">UI/UX DESIGNER</p>
+            <h1 class="slogan">
+                "빛바랜 색마저 <b>'멋'</b>으로 승화시켜<br>
+                사용자의 일상에 투명하게 스며드는 사람"
+            </h1>
+            
+            <div class="btn-group">
+                <a href="#experience" class="btn btn-primary">소개</a>
+                <a href="javascript:void(0)" onclick="toggleContact()" class="btn btn-outline">연락하기</a>
+            </div>
+
+            <div id="contact-info">
+                <p>📸 Instagram: <b>@hayan4882</b></p>
+                <p>✉️ Email: <b>d2509@e-mirim.hs.kr</b></p>
+            </div>
+        </header>
+
+        <section id="experience">
+            <h2>🏆 Awards & Experience</h2>
+            
+            <div class="list-item">
+                <h3>주요 수상 및 자격</h3>
+                <p>• 디자인 위크 상 수상</p>
+                <p>• 교과우수상 (영어, 체육)</p>
+            </div>
+
+            <div class="list-item">
+                <h3>프로젝트 경험</h3>
+                <p>• <b>미림해커톤:</b> '우리 선 그어볼까?' 앱 제작</p>
+                <p>• <b>앱 제작:</b> '술이 들어간다 쭉쭉' 기획 및 디자인</p>
+                <p>• <b>SAM:</b> 6가지 스타일 아이콘(체크박스) 제작</p>
+            </div>
+
+            <div class="list-item">
+                <h3>활동 사항</h3>
+                <p>• <b>코더스(동아리):</b> 포스터 및 부원 소개 디자인</p>
+                <p>• <b>오디(동아리):</b> 체육대회 영상 촬영 및 제작</p>
+                <p>• <b>4D(동아리):</b> 스티커 제작 및 UI/UX 리디자인</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Park Hayan. All rights reserved.</p>
+            <p>Contact: d2509@e-mirim.hs.kr</p>
+        </footer>
+    </div>
+
+    <script>
+        // 커서 움직임 스크립트
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 연락처 토글 함수
+        function toggleContact() {
+            const info = document.getElementById('contact-info');
+            info.style.display = (info.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
